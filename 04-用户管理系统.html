@@ -1,0 +1,101 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="bs/css/bootstrap.css">
+    <style type="text/css">
+        table thead tr th {
+            text-align:center;
+        }
+        .panel {
+            width: 800px;
+            margin: 50px auto;
+
+        }
+        input {
+            width: 80px;
+        }
+    </style>
+</head>
+<body>
+<div style="padding:20px;" id="app">
+    <div class="panel panel-primary">
+        <div class="panel-heading">用户管理</div>
+        <table class="table table-bordered table-striped text-center">
+            <thead>
+            <tr>
+                <th>用户名</th>
+                <th>年龄</th>
+                <th>毕业学校</th>
+                <th>备注</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <template v-for="row in rows ">
+                <tr>
+                    <td><span v-if="row.display" >{{row.Name}}</span> <input v-if="!row.display" v-model="row.Name"></td>
+                    <td><span v-if="row.display" >{{row.Age}}</span><input v-if="!row.display" v-model="row.Age"></td>
+                    <td><span v-if="row.display" >{{row.School}}</span><input v-if="!row.display" v-model="row.School"></td>
+                    <td><span v-if="row.display" >{{row.Remark}}</span><input v-if="!row.display" v-model="row.Remark"></td>
+
+                    <td><a href="#" v-on:click="row.display = !row.display">编辑</a> <a href="#" @click="Add(row.Id)">插入</a> <a href="#" @click="Delete(row.Id)">删除</a></td>
+                </tr>
+            </template>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="Content/jquery-1.9.1.min.js"></script>
+<script src="//vuejs.org/js/vue.min.js"></script>
+<script type="text/javascript">
+    //Model
+    var data = {
+        rows: [
+            { Id: 0, Name: '', Age: '', School: '', Remark: '',display: true, }
+        ],
+        rowtemplate: { Id: 0, Name: '', Age: '', School: '', Remark: '',display: true, }
+    };
+    //ViewModel
+    var vue = new Vue({
+        el: '#app',
+        data: data,
+        methods: {
+            Save: function (event) {
+                if (this.rowtemplate.Id == 0) {
+                    //设置当前新增行的Id
+                    this.rowtemplate.Id = this.rows.length + 1;
+                    this.rows.push(this.rowtemplate);
+                }
+
+                //还原模板
+                this.rowtemplate = { Id: 0, Name: '', Age: '', School: '', Remark: '' }
+            },
+            Delete: function (id) {
+                //实际项目中参数操作肯定会涉及到id去后台删除，这里只是展示，先这么处理。
+                for (var i=0;i<this.rows.length;i++){
+                    if (this.rows[i].Id == id) {
+                        this.rows.splice(i, 1);
+                        break;
+                    }
+                }
+            },
+            Add: function (id) {
+                //实际项目中参数操作肯定会涉及到id去后台删除，这里只是展示，先这么处理。
+                for (var i=0;i<this.rows.length;i++){
+                    if (this.rows[i].Id == id) {
+                        this.rows.splice(i + 1, 0,this.rowtemplate);
+                        break;
+                    }
+                }
+                this.rowtemplate = { Id: 0, Name: '', Age: '', School: '', Remark: '' }
+            },
+            Edit: function (row) {
+                this.rowtemplate = row;
+            }
+        }
+    });
+</script>
+</body>
+</html>

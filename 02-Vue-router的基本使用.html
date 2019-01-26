@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="bs/css/bootstrap.css">
+    <style>
+        body{
+            background-color: #e8e8e8;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="row">
+            <div class="col-xs-8 col-xs-offset-2">
+                <div class="page-header">
+                    <h1>IT666教育</h1>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2 col-xs-offset-2">
+                <div class="list-group">
+                    <!-- 使用 router-link 组件来导航. -->
+                    <!-- 通过传入 `to` 属性指定链接. -->
+                    <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
+                    <router-link class="list-group-item"  :to="{name: 'h5'}">HTML5学院</router-link>
+                    <router-link class="list-group-item"  :to="{name: 'java'}">Java学院</router-link>
+                    <router-link class="list-group-item"  :to="{name: 'python'}">Python学院</router-link>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="panel">
+                    <div class="panel-body">
+                        <!-- 路由出口 -->
+                        <!-- 路由匹配到的组件将渲染在这里 -->
+                        <router-view></router-view>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <template id="h5">
+        <div>
+            <h2>HTML5学院</h2>
+            <p>掌握面向未来的神技!</p>
+            <img src="img/h5.jpg" alt="" width="250">
+            <div>
+                <ul class="nav nav-tabs">
+                    <router-link  to="/h5/basic">基础班</router-link>
+                    <router-link  to="/h5/big">大神班</router-link>
+                </ul>
+                <div class="tab-content">
+                    <router-view></router-view>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="basic">
+        <div>
+            <h3>基础班</h3>
+            <p>快速入门HTML5的学习!</p>
+            <img src="img/h5.jpg" alt="" width="150">
+        </div>
+    </template>
+
+    <template id="big">
+        <div>
+            <h3>大神班</h3>
+            <p>精通HTML5的学习!</p>
+            <img src="img/img_02.jpg" alt="" width="150">
+        </div>
+    </template>
+
+    <template id="java">
+        <div>
+            <h2>Java学院</h2>
+            <p>都说Java是世界上最好的语言!</p>
+            <img src="img/java.jpg" alt="" width="250">
+        </div>
+    </template>
+
+    <template id="python">
+        <div>
+            <h2>Python学院</h2>
+            <p>现在好火热呀!</p>
+            <img src="img/python.jpg" alt="" width="250">
+        </div>
+    </template>
+
+    <script src="js/vue.js"></script>
+    <script src="js/vue-router.js"></script>
+    <script>
+        // 1.创建组件
+        const  Html5 = Vue.extend({
+            template: '#h5'
+        });
+
+        const  Basic = Vue.extend({
+            template: '#basic'
+        });
+
+        const  Big = Vue.extend({
+            template: '#big'
+        });
+
+        const  Java = Vue.extend({
+            template: '#java'
+        });
+
+        const  Python = Vue.extend({
+            template: '#python'
+        });
+
+        // 2. 定义路由
+        const routes = [
+            {
+                path:'/h5',
+                name:'h5',
+                component: Html5,
+                children: [
+                    {path:'basic', component: Basic},
+                    {path:'big', component: Big},
+                    // 配置根路由
+                    {path:'/', redirect: 'basic'}
+                ]
+            },
+            {path:'/java', component: Java, name: 'java'},
+            {path:'/python', component: Python, name: 'python'},
+            // 配置根路由
+            {path:'/', redirect: '/h5'}
+        ];
+
+        // 3. 创建路由实例
+        const router = new VueRouter({
+             routes
+        });
+
+        // 4.创建Vue的实例,并挂载
+        new Vue({
+            router
+        }).$mount('#app')
+    </script>
+</body>
+</html>

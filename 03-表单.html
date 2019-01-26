@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组件之通过插槽(slot)分发内容</title>
+    <!-- import Vue.js -->
+    <script src="//vuejs.org/js/vue.min.js"></script>
+    <!-- import stylesheet -->
+    <link rel="stylesheet" href="//unpkg.com/iview/dist/styles/iview.css">
+    <!-- import iView -->
+    <script src="//unpkg.com/iview/dist/iview.min.js"></script>
+
+    <style>
+        .content {
+
+            width: 750px;
+            margin: 50px auto;
+            text-align: center;
+        }
+        input {
+            width:60px;
+        }
+
+        span {
+            height: 32px;
+        }
+
+    </style>
+
+</head>
+<body>
+<div id="app">
+
+    <div class="content">
+
+
+
+
+
+        <Row>
+
+            <i-col span="5" >
+                <span > 姓名</span>
+
+            </i-col>
+            <i-col span="5" >
+                <span > 年龄 </span>
+            </i-col>
+            <i-col span="5" >
+                <span > 生日 </span>
+
+            </i-col>
+            <i-col span="5" >
+                <span > 地址</span>
+
+            </i-col>
+
+        </Row>
+
+        <row>
+
+            <div  v-for="item in data">
+
+                <i-col span="5" >
+                    <span v-if="item.display" v-on:click="item.display = !item.display"> {{item.name}}</span> <input v-if="!item.display" v-model="item.name"> </input>
+
+                </i-col>
+                <i-col span="5" >
+                    <span v-if="item.display" v-on:click="item.display = !item.display"> {{item.age}} </span> <input v-if="!item.display" v-model="item.age"> </input>
+                </i-col>
+                <i-col span="5" >
+                    <span v-if="item.display" v-on:click="item.display = !item.display"> {{item.birthday}} </span><input v-if="!item.display" v-model="item.birthday"></input>
+
+                </i-col>
+                <i-col span="5" >
+                    <span v-if="item.display" v-on:click="item.display = !item.display"> {{item.address}}</span> <input v-if="!item.display" v-model="item.address"></input>
+
+                </i-col>
+                <i-button v-if="!item.display" v-on:click="item.display = !item.display"> 保存</i-button>
+            </div>
+
+
+        </row>
+
+        <row>
+
+            <div >
+
+                <i-col span="5" >
+                     <input v-model="rowtemplate.name"> </input>
+                </i-col>
+                <i-col span="5" >
+                    <input v-model="rowtemplate.age"> </input>
+                </i-col>
+                <i-col span="5" >
+                    <input v-model="rowtemplate.birthday"></input>
+
+                </i-col>
+
+                <i-col span="5" >
+                    <input v-model="rowtemplate.address"></input>
+                </i-col>
+                <i-button type="primary" v-on:click="add"> 添加</i-button>
+            </div>
+
+
+        </row>
+
+
+    </div>
+
+
+</div>
+
+<script>
+    new Vue({
+        el:"#app",
+        data:{
+
+            columns: [
+                {
+                    title: '姓名',
+                    slot: 'name'
+                },
+                {
+                    title: '年龄',
+                    slot: 'age'
+                },
+                {
+                    title: '出生日期',
+                    slot: 'birthday'
+                },
+                {
+                    title: '地址',
+                    slot: 'address'
+                },
+                {
+                    title: '操作',
+                    slot: 'action'
+                }
+            ],
+            data: [
+                {
+                    name: '王小明',
+                    age: 18,
+                    birthday: '919526400000',
+                    address: '北京市朝阳区芍药居',
+                    display: true,
+                },
+                {
+                    name: '张小刚',
+                    age: 25,
+                    birthday: '696096000000',
+                    address: '北京市海淀区西二旗',
+                    display: true,
+                },
+                {
+                    name: '李小红',
+                    age: 30,
+                    birthday: '563472000000',
+                    address: '上海市浦东新区世纪大道',
+                    display: true,
+                },
+                {
+                    name: '周小伟',
+                    age: 26,
+                    birthday: '687024000000',
+                    address: '深圳市南山区深南大道',
+                    display: true,
+                }
+            ],
+            rowtemplate: { name: 0, age: '', birthday: '', address: '', display: true },
+
+
+        },
+
+        methods: {
+            add: function(){
+                // 模型改变，视图会自动更新
+                console.log("ASDASDASD")
+                this.data.push(this.rowtemplate);
+                this.rowtemplate={ name: 0, age: '', birthday: '', address: '', display: true };
+            }
+
+        }
+    })
+
+</script>
+</body>
+</html>
+
